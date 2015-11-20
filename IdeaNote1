@@ -1,0 +1,12 @@
+Assuming we use the occupancy grid developed for the first assignment:
+
+    -Update the scanAll() method to include a colour scanner for the cell the robot is currenty occupying
+    -Can either use a seperate 2D array to hold the positions of victims or use some assignment in one of 
+      of the existing arrays to indicate there is a victim
+    -Use different variables for different priorities of victims this 2D array
+
+To make sure that what happened last time does not reoccur, we could use a mazimum number of movements.
+This would be the number of cells the robot has to move to + maximum number of moves for avoidance methods.
+After this count falls to 0 or reaches the max, the robot must stop.
+This should be implemented if we are unsure the robot will maneuver correctly.
+
