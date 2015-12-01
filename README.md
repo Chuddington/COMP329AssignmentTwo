@@ -14,3 +14,8 @@ Jason code is on the computer
 Environment is a translator for Jason - environment variables define which 
 Jason function to call
 
+## Installing Jason Eclipse Plugin
+
+Go to: http://jason.sourceforge.net/mini-tutorial/eclipse-plugin/
+
+On robotics computers start from step 6.
