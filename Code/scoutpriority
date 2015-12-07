@@ -1,0 +1,10 @@
+/*Initial Beliefs*/
+
+/*Initial Goals*/
+
+/*Plans*/
+
++!victim(C,X,Y)
+	:	
+	<-	.print("I found a ",C, " victim!")
+		(doctor,tell,victim(C,X,Y))
