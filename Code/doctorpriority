@@ -17,6 +17,7 @@
 		.sort(L,SL);
 		.min(L,victim(I,O,U));
 		.print("Victims in order of priority: ",SL);
+		.send(scout,tell,victim(I,O,U));
 		!printmin(I,O,U).
 		
 		
