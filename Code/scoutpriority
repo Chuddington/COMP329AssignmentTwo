@@ -23,6 +23,11 @@
 		.send(doctor,tell,victim(1,5,0));
 		.wait(1000);
 		.send(doctor,tell,victim(3,6,6)).
+		
++victim(C,X,Y)[source(A)]
+	<-	if (C == 1) {.print(A," tells me the priority victim is red at (",X,",",Y,")")};
+		if (C == 2) {.print(A," Tells me the priority victim is blue at (",X,",",Y,")")};
+		if (C == 3) {.print(A," Tells me the priority victim is green at (",X,",",Y,")")}.
 
 //unused
 +hello[source(A)]
