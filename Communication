@@ -1,0 +1,9 @@
+1. Doctor tells the scout to start.
+
+2. The scout tells the robot to move, scan, etc.
+
+3. The scan is passed to the scout in a format it understands.
+
+4. The scout tells the doctor of a found victim.
+
+5. Loop from 2 until complete.
