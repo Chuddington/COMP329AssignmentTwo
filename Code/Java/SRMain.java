@@ -13,6 +13,17 @@ import java.util.logging.Logger;
 public class SRMain {
   
   //global variables here
+    //SRMov parameters
+  public static final int DEGREE  = 108;
+  public static final int COLUMNS = 4  ;
+  public static final int ROWS    = 5  ;
+  public static final int DIST    = 25 ;
+  
+    //object creation
+  public static SREnv   envObj  ;
+  public static SRModel modelObj;
+  public static SRMov   movObj  ;  
+
   
   public static void main(String[] args) {
     //do stuff here

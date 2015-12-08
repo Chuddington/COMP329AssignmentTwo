@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.util.Random;
 import java.util.logging.Logger;
 
+//class used to model/map the world
 public class SRModel extends GridWorldModel {
   
   //Global Variables

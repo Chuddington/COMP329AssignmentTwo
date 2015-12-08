@@ -17,5 +17,4 @@ public class SREnv extends Environment {
   public static final Term mvFwd = Literal.parseLiteral("moveForward()");
 
     //Object declarations
-  public static SRMov movObj;
 }
