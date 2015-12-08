@@ -57,4 +57,14 @@ public class SRMov {
     pilot.travel(dist);
   }
   
+  public static int[] moveTo(int x, int y, int[] cPos) {
+    int[] z = cPos;
+    
+    while(z[0] != x || z[1] != y) {
+      if(x > limit[0] )
+    }
+    
+    return z;
+  }
+  
 }
