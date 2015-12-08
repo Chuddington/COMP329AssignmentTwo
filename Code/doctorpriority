@@ -1,0 +1,23 @@
+/*Initial Beliefs*/
+
+/*Initial Goals*/
+
+/*Plans*/
+
++victim(red,X,Y)
+	:	
+	<-	.findall(a(X,Y),victim(C,X,Y),L);
+		sort(L).
+		//print L
+		
++victim(blue,X,Y)
+	:	
+	<-	.findall(b(X,Y),victim(C,X,Y),L);
+		sort(L).
+		//print L
+		
++victim(green,X,Y)
+	:	
+	<-	.findall(c(X,Y),victim(C,X,Y),L);
+		sort(L).
+		//print L
