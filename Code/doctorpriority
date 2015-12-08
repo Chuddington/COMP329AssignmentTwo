@@ -1,23 +1,26 @@
-/*Initial Beliefs*/
+/* Initial beliefs and rules */
 
-/*Initial Goals*/
+/* Initial goals */
 
-/*Plans*/
+/* Plans */
 
-+victim(red,X,Y)
-	:	
-	<-	.findall(a(X,Y),victim(C,X,Y),L);
-		sort(L).
-		//print L
++hello[source(A)] 
+  	<-	.print("I receive an hello from ",A);
+     	.send(A,tell,hello).
 		
-+victim(blue,X,Y)
-	:	
-	<-	.findall(b(X,Y),victim(C,X,Y),L);
-		sort(L).
-		//print L
++victim(C,X,Y)[source(A)]
+	<- 	.print(A," found a ",C," victim at (",X,",",Y,")");
+		!addlist.
 		
-+victim(green,X,Y)
-	:	
-	<-	.findall(c(X,Y),victim(C,X,Y),L);
-		sort(L).
-		//print L
++!addlist
+	<-	.findall(victim(C,X,Y),victim(C,X,Y),L);
+		.sort(L,SL);
+		.min(L,victim(I,O,U));
+		.print("Victims in order of priority: ",SL);
+		!printmin(I,O,U).
+		
+		
++!printmin(C,X,Y)
+	<-	if (C == 1) {.print("Priority victim is red at (",X,",",Y,")")};
+		if (C == 2) {.print("Priority victim is blue at (",X,",",Y,")")};
+		if (C == 3) {.print("Priority victim is green at (",X,",",Y,")")}.
