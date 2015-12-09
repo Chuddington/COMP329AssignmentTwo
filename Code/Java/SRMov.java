@@ -11,6 +11,7 @@ public class SRMov {
   public static int degree ; //rotational strength of the robot
   public static int facing ; //state var to indicate where robot is facing
   
+  public static SRModel modObj;
   public static DifferentialPilot pilot = new DifferentialPilot(3.22, 19, Motor.B, Motor.C);
   public static OdometryPoseProvider opp = new OdometryPoseProvider(pilot);
   
@@ -21,6 +22,16 @@ public class SRMov {
     dist    = di;
     degree  = de;
     facing  = 1 ;
+  }
+  
+  //constructor including the SRModel class
+  Movement(int di, int c, int r, int de, SRModel m) {
+    columns = c ;
+    rows    = r ;
+    dist    = di;
+    degree  = de;
+    facing  = 1 ;
+    modObj  = m ;
   }
   
   //method to turn the robot left
@@ -55,11 +66,17 @@ public class SRMov {
     return facing;
   }
   
+  //updates the Modelling object
+  public static void setModelObject(SRModel m) {
+    modObj = m;
+  }
+  
   //move forward a cell
   public static void moveFwd() {
     pilot.travel(dist);
   }
   
+  //method which moves to a cell; does not check for objects
   public static int[] moveTo(int x, int y, int[] cPos) {
     int[] z = cPos; //create a local copy of current position
     
