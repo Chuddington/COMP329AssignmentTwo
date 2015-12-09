@@ -17,6 +17,7 @@ public class SRModel extends GridWorldModel {
   public static int xCellTotal; //number of cells on the X axis
   public static int yCellTotal; //number of cells on the Y axis
 
+    ColorHTSensor cs = new ColorHTSensor(SensorPort.S4);	//create colour sensor object
 
   //constructor
   SRModel(int x, int y) {

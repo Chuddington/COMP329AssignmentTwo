@@ -14,6 +14,7 @@ public class SRMov {
   public static DifferentialPilot pilot = new DifferentialPilot(3.22, 19, Motor.B, Motor.C);
   public static OdometryPoseProvider opp = new OdometryPoseProvider(pilot);
   
+  //constructor
   Movement(int di, int c, int r, int de) {
     columns = c ;
     rows    = r ;
@@ -21,7 +22,8 @@ public class SRMov {
     degree  = de;
     facing  = 1 ;
   }
-    
+  
+  //method to turn the robot left
   public static void turnLeft() {
     pilot.rotate(-degree); //Turns left
     
@@ -30,6 +32,7 @@ public class SRMov {
     
   }
   
+  //method to turn the robot right
   public static void turnRight() {
     pilot.rotate(degree); //Turns right
     
@@ -38,7 +41,7 @@ public class SRMov {
     
   }
   
-  //method to turn to face a particular direction
+  //method to turn and face a particular direction
   public static void turnTo(int result) {
     while(facing != result) { //when not facing the desired direction
       //turn left if result is anti-clockwise; else turn right
@@ -58,13 +61,33 @@ public class SRMov {
   }
   
   public static int[] moveTo(int x, int y, int[] cPos) {
-    int[] z = cPos;
+    int[] z = cPos; //create a local copy of current position
     
-    while(z[0] != x || z[1] != y) {
-      if(x > limit[0] )
+    while(z[0] != x) {       //while the robot is not on the same X axis
+      if(x > z[0] ) {        //if the destination is to the right of the robot
+        turnTo(2);           //face right
+        moveFwd();           //move forward a cell
+        ++z[0]   ;           //increment X axis local copy
+      } else if(x < z[0] ) { //if the destination is to the left of the robot
+        turnTo(4);           //face left
+        moveFwd();           //move forward a cell
+        --z[0]   ;           //decrement X axis local copy
+      }
     }
     
-    return z;
+    while(z[1] != y) {       //while the robot is not on the same Y axis
+      if(y > z[1] ) {        //if the destination is 'above' the robot
+        turnTo(1);           //face up
+        moveFwd();           //move forward a cell
+        ++z[1]   ;           //increment Y axis local copy
+      } else if(y < z[1] ) { //if the destination is 'below' the robot
+        turnTo(3);           //face down
+        moveFwd();           //move forward a cell
+        --z[1]   ;           //decrement Y axis local copy
+      }
+    }
+    
+    return z; //output what is now the robot's current position
   }
   
 }
