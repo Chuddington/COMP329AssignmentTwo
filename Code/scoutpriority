@@ -2,27 +2,36 @@
 
 /* Initial goals */
 
-!start.
+!print_ready.
 
 /* Plans */
 
 +!print_ready
-	<-	.print("Ready!").
+	:	scout_ready
+	<-	.print("I have recieved orders from doctor to look for victims!").
 
-+!start
-	<-	.send(doctor,tell,victim(3,0,0));
++!print_ready
+	:	not scout_ready
+	<-	.print("I am awaiting orders from doctor!").
+
++!find_victims[source(A)]
+	<-	+scout_ready;
+		!print_ready;
+		.print("Looking for victims...");
+		//testing
+		.send(A,tell,victim(3,0,0));
 		.wait(1000);
-		.send(doctor,tell,victim(2,0,0));
+		.send(A,tell,victim(2,0,0));
 		.wait(1000);
-		.send(doctor,tell,victim(1,0,6));
+		.send(A,tell,victim(1,0,6));
 		.wait(1000);
-		.send(doctor,tell,victim(1,2,3));
+		.send(A,tell,victim(1,2,3));
 		.wait(1000);
-		.send(doctor,tell,victim(1,4,3));
+		.send(A,tell,victim(1,4,3));
 		.wait(1000);
-		.send(doctor,tell,victim(1,5,0));
+		.send(A,tell,victim(1,5,0));
 		.wait(1000);
-		.send(doctor,tell,victim(3,6,6)).
+		.send(A,tell,victim(3,6,6)).
 		
 +victim(C,X,Y)[source(A)]
 	<-	if (C == 1) {.print(A," tells me the priority victim is red at (",X,",",Y,")")};
