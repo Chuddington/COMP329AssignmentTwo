@@ -2,11 +2,14 @@
 
 /* Initial goals */
 
+!start.
+
 /* Plans */
 
-+hello[source(A)] 
-  	<-	.print("I receive an hello from ",A);
-     	.send(A,tell,hello).
++!start
+	<-	.wait(1000);
+		.send(scout,achieve,find_victims);
+		.print("I have ordered scout to look the victims!").
 		
 +victim(C,X,Y)[source(A)]
 	<- 	.print(A," found a ",C," victim at (",X,",",Y,")");
