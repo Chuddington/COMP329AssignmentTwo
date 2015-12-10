@@ -294,15 +294,53 @@ public class SRModel extends GridWorldModel {
     }
   }
   
-  public static void impScan(boolean[] r) {
-    if(r[0] && !scanLimitLeft(movObj.facing) ) {
-      obstacleAtLeft(movObj.facing);
+  public static boolean canMove(int[] cp, int f) {
+    switch(f) {
+      case(1): //facing up
+        if( (map[cp[0] ][cp[1] + 1] < UNKNOWN_ID) && (cp[1] + 1 != yLimit) ) {
+          return true;
+          break;
+        } else {
+          return false;
+          break;
+        }
+      case(2): //facing right
+        if( (map[cp[0] + 1][cp[1] ] < UNKNOWN_ID) && (cp[0] + 1 != xLimit) ) {
+          return true;
+          break;
+        } else {
+          return false;
+          break;
+        }
+      case(3): //facing down
+        if( (map[cp[0] ][cp[1] - 1] < UNKNOWN_ID) && (cp[1] - 1 != -1) ) {
+          return true;
+          break;
+        } else {
+          return false;
+          break;
+        }
+      case(4): //facing left
+        if( (map[cp[0] - 1][cp[1] ] < UNKNOWN_ID) && (cp[0] - 1 != -1) ) {
+          return true;
+          break;
+        } else {
+          return false;
+          break;
+        }
+      
     }
-    if(r[1] && !scanLimitUp(movObj.facing) ) {
-      obstacleAtUp(movObj.facing);
+  }
+  
+  public static void impScan(boolean[] r, int f) {
+    if(r[0] && !scanLimitLeft(f) ) {
+      obstacleAtLeft(f);
     }
-    if(r[2] && !scanLimitRight(movObj.facing) ) {
-      obstacleAtRight(movObj.facing);
+    if(r[1] && !scanLimitUp(f) ) {
+      obstacleAtUp(f);
+    }
+    if(r[2] && !scanLimitRight(f) ) {
+      obstacleAtRight(f);
     }
   }
   

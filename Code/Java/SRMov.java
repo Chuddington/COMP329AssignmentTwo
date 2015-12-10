@@ -26,12 +26,8 @@ public class SRMov {
   
   //constructor including the SRModel class
   Movement(int di, int c, int r, int de, SRModel m) {
-    columns = c ;
-    rows    = r ;
-    dist    = di;
-    degree  = de;
-    facing  = 1 ;
     modObj  = m ;
+    this(di, c, r, de);
   }
   
   //method to turn the robot left
@@ -71,6 +67,10 @@ public class SRMov {
     modObj = m;
   }
   
+  public static SRModel getModelObject() {
+    return modObj;
+  }
+  
   //move forward a cell
   public static void moveFwd() {
     pilot.travel(dist);
@@ -103,6 +103,135 @@ public class SRMov {
         --z[1]   ;           //decrement Y axis local copy
       }
     }
+    
+    return z; //output what is now the robot's current position
+  }
+  
+  //moves to a destination, using the map for help
+  public static int[] moveTo(int x, int y, int[] cPos, SRModel map) {
+    int[] z = cPos; //create a local copy of current position
+    modObj = setModelObject(map);
+    
+    //while robot is not at the target position
+    while(z[0] != x && z[1] != y) {
+      while(z[0] != x) {       //while the robot is not on the same X axis
+        if(x > z[0] ) {        //if the dest. is to the right of the robot
+          
+          turnTo(2);           //face to the right
+          if(modObj.canMove(z, facing) ) {
+            moveFwd();         //if right-cell is at least scanned and empty,
+            ++z[0];            //move into it, increment X axis position.
+            
+          } else {             //if right-cell is unknown or has an obstacle
+            turnTo(1);         //face up
+            if(modObj.canMove(z, facing) ) {
+              moveFwd();       //if above-cell is at least scanned and empty
+              ++z[1];          //move into it, increment Y axis position
+              
+            } else {           //if above-cell is unknown or has an obstacle
+              turnTo(3);       //face down
+              if(modObj.canMove(z, facing) ) {
+                moveFwd();     //if below-cell is at least scanned and empty
+                --z[1];        //move into it, decrement Y axis position
+                
+              } else {         //if up, down and right cell is unknown/occupied
+                turnTo(2);
+                boolean[] scnRes = map.scanAll(dist);
+                modObj.impScan(scnRes, facing);
+                break;         //perform a scan and update the map
+              }
+            }
+          }
+        } else if(x < z[0] ) { //if the dest. is to the left of the robot
+          
+          turnTo(4);           //face to the left
+          if(modObj.canMove(z, facing) ) {
+            moveFwd();         //if left-cell is at least scanned and empty,
+            --z[0];            //move into it, decrement X axis position.
+            
+          } else {             //if left-cell is unknown or has an obstacle
+            turnTo(1);         //face up
+            if(modObj.canMove(z, facing) ) {
+              moveFwd();       //if above-cell is at least scanned and empty
+              ++z[1];          //move into it, increment Y axis position
+              
+            } else {           //if above-cell is unknown or has an obstacle
+              turnTo(3);       //face down
+              if(modObj.canMove(z, facing) ) {
+                moveFwd();     //if below-cell is at least scanned and empty
+                --z[1];        //move into it, decrement Y axis position
+                
+              } else {         //if up, down and left cell is unknown/occupied
+                turnTo(4);
+                boolean[] scnRes = map.scanAll(dist);
+                modObj.impScan(scnRes, facing);
+                break;         //perform a scan and update the map
+              }
+            }
+          }
+        }
+      } //end of X axis while loop
+      
+      while(z[1] != y) {       //while the robot is not on the same Y axis
+        if(y > z[1] ) {        //if the dest. is 'above' the robot
+          
+          turnTo(1);           //face up
+          if(modObj.canMove(z, facing) ) {
+            moveFwd();         //if above-cell is at least scanned and empty,
+            ++z[1];            //move into it, increment Y axis position.
+            
+          } else {             //if above-cell is unknown or has an obstacle
+            turnTo(2);         //face right
+            if(modObj.canMove(z, facing) ) {
+              moveFwd();       //if right-cell is at least scanned and empty
+              ++z[0];          //move into it, increment X axis position
+              
+            } else {           //if right-cell is unknown or has an obstacle
+              turnTo(4);       //face left
+              if(modObj.canMove(z, facing) ) {
+                moveFwd();     //if left-cell is at least scanned and empty
+                --z[0];        //move into it, decrement X axis position
+                
+              } else {         //if up, right and left cell is unknown/occupied
+                turnTo(4);
+                boolean[] scnRes = map.scanAll(dist);
+                modObj.impScan(scnRes, facing);
+                break;         //perform a scan and update the map
+              }
+            }
+          }
+          
+        } else if(y < z[1] ) { //if the dest. is 'below' the robot
+          
+          turnTo(3);           //face down
+          if(modObj.canMove(z, facing) ) {
+            moveFwd();         //if below-cell is at least scanned and empty,
+            --z[1];            //move into it, increment Y axis position.
+            
+          } else {             //if below-cell is unknown or has an obstacle
+            turnTo(2);         //face right
+            if(modObj.canMove(z, facing) ) {
+              moveFwd();       //if right-cell is at least scanned and empty
+              ++z[0];          //move into it, increment X axis position
+              
+            } else {           //if right-cell is unknown or has an obstacle
+              turnTo(4);       //face left
+              if(modObj.canMove(z, facing) ) {
+                moveFwd();     //if left-cell is at least scanned and empty
+                --z[0];        //move into it, decrement X axis position
+                
+              } else {         //if down, right, left cell is unknown/occupied
+                turnTo(4);
+                boolean[] scnRes = map.scanAll(dist);
+                modObj.impScan(scnRes, facing);
+                break;         //perform a scan and update the map
+              }
+            }
+          }
+        }
+      } //end of Y   axis while loop
+    
+    }   //end of X/Y axis while loop
     
     return z; //output what is now the robot's current position
   }
