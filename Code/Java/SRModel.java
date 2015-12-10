@@ -348,6 +348,11 @@ public class SRModel extends GridWorldModel {
     movObj = m;
   }
   
+  public static SRMov getMovementObject() {
+    return movObj;
+  }
+  
+  //method to return a string for Jason; outputs victim colour
   public String getColour() {
     int colour = cs.getColorID(); //scan colour
     String literal = "";

@@ -16,7 +16,7 @@ public class SRMov {
   public static OdometryPoseProvider opp = new OdometryPoseProvider(pilot);
   
   //constructor
-  Movement(int di, int c, int r, int de) {
+  SRmov(int di, int c, int r, int de) {
     columns = c ;
     rows    = r ;
     dist    = di;
@@ -25,7 +25,7 @@ public class SRMov {
   }
   
   //constructor including the SRModel class
-  Movement(int di, int c, int r, int de, SRModel m) {
+  SRMov(int di, int c, int r, int de, SRModel m) {
     modObj  = m ;
     this(di, c, r, de);
   }

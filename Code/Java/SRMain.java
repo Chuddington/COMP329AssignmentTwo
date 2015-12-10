@@ -10,23 +10,33 @@ import java.awt.Graphics;
 import java.util.Random;
 import java.util.logging.Logger;
 
-public class SRMain {
+public class SRMain extends Environment {
   
   //global variables here
-    //SRMov parameters
+    //constants
   public static final int DEGREE  = 108;
   public static final int COLUMNS = 4  ;
   public static final int ROWS    = 5  ;
   public static final int DIST    = 25 ;
   
+    //Jason String Literals
+  public static final Term explore   = Literal.parseLiteral("explore()");
+  public static final Term outputMap = Literal.parseLiteral("getMap()");
+  public static final Term mvToDest  = Literal.parseLiteral("");
+  public static Logger log = Logger.getLogger(SRMain.class.getName());
+
     //object creation
   public static SREnv   envObj  ;
   public static SRModel modelObj;
   public static SRMov   movObj  ;  
 
   
-  public static void main(String[] args) {
-    //do stuff here
+  @Override
+  public void init(String[] args) {
+    //Define global variables
+    movObj = new SRMov(DIST, COLUMNS, ROWS, DEGREE);
+    modObj = new SRModel(COLUMNS, ROWS, movObj);
+    movObj.setModelObject(modObj);
   }
   
 }
