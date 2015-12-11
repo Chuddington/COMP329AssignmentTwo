@@ -1,3 +1,5 @@
+package robot;
+
 import lejos.nxt.*;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.localization.OdometryPoseProvider;
@@ -16,7 +18,7 @@ public class SRMov {
   public static OdometryPoseProvider opp = new OdometryPoseProvider(pilot);
   
   //constructor
-  SRmov(int di, int c, int r, int de) {
+  SRMov(int di, int c, int r, int de) {
     columns = c ;
     rows    = r ;
     dist    = di;
@@ -26,8 +28,9 @@ public class SRMov {
   
   //constructor including the SRModel class
   SRMov(int di, int c, int r, int de, SRModel m) {
-    modObj  = m ;
-    this(di, c, r, de);
+	this(di, c, r, de);
+	modObj  = m ;
+    
   }
   
   //method to turn the robot left
@@ -52,8 +55,11 @@ public class SRMov {
   public static void turnTo(int result) {
     while(facing != result) { //when not facing the desired direction
       //turn left if result is anti-clockwise; else turn right
-      (facing > result) ? turnLeft() : turnRight();
-    }
+	if (facing > result)
+		turnLeft();
+	else
+		turnRight();
+      }
     
   }
   
@@ -110,7 +116,7 @@ public class SRMov {
   //moves to a destination, using the map for help
   public static int[] moveTo(int x, int y, int[] cPos, SRModel map) {
     int[] z = cPos; //create a local copy of current position
-    modObj = setModelObject(map);
+    setModelObject(map);
     
     //while robot is not at the target position
     while(z[0] != x && z[1] != y) {
