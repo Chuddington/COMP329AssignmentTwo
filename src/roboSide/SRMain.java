@@ -42,4 +42,11 @@ public class SRMain {
   public static SRModel modelObj;
   public static SRMov   movObj  ;
   
+  //methods to connect with SREnv and obtain commands
+  
+  /*
+   * Information required: 
+   * Printed Null exception
+   */
+  
 }
