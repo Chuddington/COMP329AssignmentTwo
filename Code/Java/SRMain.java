@@ -7,10 +7,20 @@ import jason.environment.grid.Location;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.Random;
 import java.util.logging.Logger;
 
-public class SRMain extends Environment {
+import lejos.nxt.*;
+import lejos.nxt.addon.ColorHTSensor;
+import lejos.pc.comm.NXTConnector;
+import lejos.robotics.navigation.DifferentialPilot;
+import lejos.robotics.localization.OdometryPoseProvider;
+import lejos.util.Delay;
+
+
+public class SRMain {
   
   //global variables here
     //constants
@@ -28,15 +38,6 @@ public class SRMain extends Environment {
     //object creation
   public static SREnv   envObj  ;
   public static SRModel modelObj;
-  public static SRMov   movObj  ;  
-
-  
-  @Override
-  public void init(String[] args) {
-    //Define global variables
-    movObj = new SRMov(DIST, COLUMNS, ROWS, DEGREE);
-    modObj = new SRModel(COLUMNS, ROWS, movObj);
-    movObj.setModelObject(modObj);
-  }
+  public static SRMov   movObj  ;
   
 }
