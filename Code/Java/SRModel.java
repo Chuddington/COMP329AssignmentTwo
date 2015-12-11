@@ -1,3 +1,5 @@
+package robot;
+
 import jason.asSyntax.*;
 import jason.environment.Environment;
 import jason.environment.grid.GridWorldModel;
@@ -28,9 +30,9 @@ public class SRModel extends GridWorldModel {
   public static int[]   cPos  ; //stores the X and Y axis of the robot
 
     //class/object variables
-  SRMov    movObj;
-  UltrasonicSensor us = new UltrasonicSensor(SensorPort.S3);
-  ColorHTSensor    cs = new ColorHTSensor(   SensorPort.S4);
+  static SRMov    movObj;
+  static UltrasonicSensor us = new UltrasonicSensor(SensorPort.S3);
+  static ColorHTSensor    cs = new ColorHTSensor(   SensorPort.S4);
   
     //constants
   public static final int UNKNOWN_ID  = 6; //cell with 'fog of war'
@@ -44,10 +46,11 @@ public class SRModel extends GridWorldModel {
 
   //constructor
   SRModel(int x, int y) {
+	super(x, y, 2);
     xLimit  = x            ;
     yLimit  = y            ;
     map     = new int[x][y];
-    map     = populateMap();
+    populateMap();
     cPos    = new int[2]   ;
     cPos[0] = 0            ; //X axis position
     cPos[1] = 0            ; //Y axis position
@@ -56,12 +59,13 @@ public class SRModel extends GridWorldModel {
   
   //constructor including Movement object
   SRModel(int x, int y, SRMov m) {
-    movObj = m;
-    this(x, y);
+	  this(x, y);
+	  movObj = m;
+    
   }
   
   //method to fill the map with 'fog of war'
-  public static int[][] populateMap() {
+  public static void populateMap() {
     for(int loop1 = 0; loop1 < xLimit; ++loop1) {
       for(int loop2 = 0; loop2 < yLimit; ++loop2) {
         map[loop1][loop2] = UNKNOWN_ID;
@@ -138,15 +142,13 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] - 1][cPos[1] ] = SCANNED_ID;
           return false;
         }
-        break;
-      case(2):  //when facing right
+	case(2):  //when facing right
         if( (cPos[1] + 1) == yLimit) {
           return true;
         } else {
           map[cPos[0] ][cPos[1] + 1] = SCANNED_ID;
           return false;
         }
-        break;
       case(3):  //when facing down
         if( (cPos[0] + 1) == xLimit) {
           return true;
@@ -154,7 +156,6 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] + 1][cPos[1] ] = SCANNED_ID;
           return false;
         }
-        break;
       case(4):  //when facing left
         if( (cPos[1] - 1) == -1) {
           return true;
@@ -162,8 +163,8 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] ][cPos[1] - 1] = SCANNED_ID;
           return false;
         }
-        break;
     }
+    return false;
   }
   
   //method to check whether an edge of the arena is in front of the robot
@@ -176,7 +177,7 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] ][cPos[1] + 1] = SCANNED_ID;
           return false;
         }
-        break;
+        
       case(2):  //when facing right
         if( (cPos[0] + 1) == xLimit) {
           return true;
@@ -184,7 +185,6 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] + 1][cPos[1] ] = SCANNED_ID;
           return false;
         }
-        break;
       case(3):  //when facing down
         if( (cPos[1] - 1) == -1) {
           return true;
@@ -192,7 +192,6 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] ][cPos[1] - 1] = SCANNED_ID;
           return false;
         }
-        break;
       case(4):  //when facing left
         if( (cPos[0] - 1) == -1) {
           return true;
@@ -200,8 +199,8 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] - 1][cPos[1] ] = SCANNED_ID;
           return false;
         }
-        break;
     }
+    return false;
   }
   
   //method to check whether an edge of the arena is to the right of the robot
@@ -214,7 +213,6 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] + 1][cPos[1] ] = SCANNED_ID;
           return false;
         }
-        break;
       case(2):  //when facing right
         if( (cPos[1] - 1) == -1) {
           return true;
@@ -222,7 +220,6 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] ][cPos[1] - 1] = SCANNED_ID;
           return false;
         }
-        break;
       case(3):  //when facing down
         if( (cPos[0] - 1) == -1) {
           return true;
@@ -230,7 +227,6 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] - 1][cPos[1] ] = SCANNED_ID;
           return false;
         }
-        break;
       case(4):  //when facing left
         if( (cPos[1] + 1) == yLimit) {
           return true;
@@ -238,8 +234,8 @@ public class SRModel extends GridWorldModel {
           map[cPos[0] ][cPos[1] + 1] = SCANNED_ID;
           return false;
         }
-        break;
     }
+    return false;
   }
   
   public static void obstacleAtLeft(int f) {
@@ -299,37 +295,30 @@ public class SRModel extends GridWorldModel {
       case(1): //facing up
         if( (map[cp[0] ][cp[1] + 1] < UNKNOWN_ID) && (cp[1] + 1 != yLimit) ) {
           return true;
-          break;
         } else {
           return false;
-          break;
         }
       case(2): //facing right
         if( (map[cp[0] + 1][cp[1] ] < UNKNOWN_ID) && (cp[0] + 1 != xLimit) ) {
           return true;
-          break;
         } else {
           return false;
-          break;
         }
       case(3): //facing down
         if( (map[cp[0] ][cp[1] - 1] < UNKNOWN_ID) && (cp[1] - 1 != -1) ) {
           return true;
-          break;
         } else {
           return false;
-          break;
         }
       case(4): //facing left
         if( (map[cp[0] - 1][cp[1] ] < UNKNOWN_ID) && (cp[0] - 1 != -1) ) {
           return true;
-          break;
         } else {
           return false;
-          break;
         }
       
     }
+    return false;
   }
   
   public static void impScan(boolean[] r, int f) {
