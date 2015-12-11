@@ -1,3 +1,5 @@
+package compSide;
+
 import jason.asSyntax.*;
 import jason.environment.Environment;
 import jason.environment.grid.GridWorldModel;

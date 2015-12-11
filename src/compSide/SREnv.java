@@ -1,3 +1,5 @@
+package compSide;
+
 import jason.asSyntax.*;
 import jason.environment.Environment;
 import jason.environment.grid.GridWorldModel;
@@ -17,4 +19,6 @@ public class SREnv extends Environment {
   public static final Term mvFwd = Literal.parseLiteral("moveForward()");
 
     //Object declarations
+    
+  //stuff for updating perception and stuff
 }

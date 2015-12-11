@@ -1,4 +1,4 @@
-package robot;
+package roboSide;
 
 import lejos.nxt.*;
 import lejos.robotics.navigation.DifferentialPilot;

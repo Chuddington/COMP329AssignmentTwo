@@ -1,4 +1,4 @@
-package robot;
+package roboSide;
 
 import jason.asSyntax.*;
 import jason.environment.Environment;
