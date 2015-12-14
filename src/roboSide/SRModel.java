@@ -1,14 +1,5 @@
 package roboSide;
 
-import jason.asSyntax.*;
-import jason.environment.Environment;
-import jason.environment.grid.GridWorldModel;
-import jason.environment.grid.GridWorldView;
-import jason.environment.grid.Location;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.util.Random;
 import java.util.logging.Logger;
 import java.util.Queue;
@@ -18,7 +9,7 @@ import lejos.nxt.addon.ColorHTSensor;
 import lejos.util.Delay;
 
 //class used to model/map the world
-public class SRModel extends GridWorldModel {
+public class SRModel {
   
   //Global Variables
     //actual value-changing variables
@@ -34,7 +25,6 @@ public class SRModel extends GridWorldModel {
   public static SRMov     moveO;
   public static UltrasonicSensor us = new UltrasonicSensor(SensorPort.S3);
   public static ColorHTSensor    cs = new ColorHTSensor(   SensorPort.S4);
-  public static Queue<String> vicList;
   
     //constants
   public static final int UNKNOWN_ID  = 6; //cell with 'fog of war'
@@ -48,10 +38,8 @@ public class SRModel extends GridWorldModel {
 
   //constructor
   SRModel(int x, int y) {
-	super(x, y, 2);
     xLimit  = x                ;
     yLimit  = y                ;
-    vicList = new Queue<String>;
     map     = new int[x][y]    ;
     populateMap();
     cPos    = new int[2]       ;
@@ -354,7 +342,6 @@ public class SRModel extends GridWorldModel {
       
       //add victim to map and the list of victims
       map[cPos[0] ][cPos[1] ] = RED_VIC;
-      addVictim(literal);
       
     } else if (colour == 2)	{ //blue  victim
       //translate colour ID 2 to 1 as blue has higher priority
@@ -362,7 +349,6 @@ public class SRModel extends GridWorldModel {
       
       //add victim to map and the list of victims
       map[cPos[0] ][cPos[1] ] = BLU_VIC;
-      addVictim(literal);
       
     } else if (colour == 1)	{ //green victim
       //translate colour ID 1 to 2 as green has lower priority
@@ -370,7 +356,6 @@ public class SRModel extends GridWorldModel {
       
       //add victim to map and the list of victims
       map[cPos[0] ][cPos[1] ] = GRN_VIC;
-      addVictim(literal);
       
     } else {
       map[cPos[0] ][cPos[1] ] = EMPTY_ID; //set cell to empty & traversed
@@ -381,8 +366,5 @@ public class SRModel extends GridWorldModel {
     return literal;
   }
   
-  public static void addVictim(String s) {
-    vicList.push(s);
-  }
 
 }

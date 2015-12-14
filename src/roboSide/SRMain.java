@@ -37,11 +37,19 @@ public class SRMain {
   public static final Term mvToDest  = Literal.parseLiteral("");
   public static Logger log = Logger.getLogger(SRMain.class.getName());
 
-    //object creation
-  public static SRModel modelObj;
-  public static SRMov   movObj  ;
-  public static BtStuff btObj   ;
-  public static Thread  btThread; //
+    //object/variable creation
+  public static SRModel         modelObj  ;
+  public static SRMov           movObj    ;
+  public static BtStuff         btObj     ;
+  public static SRInput         inputObj  ;
+  public static Thread          btThread  ;
+  public static NXTConnection   connObj   ; //holds the type of connection (BT)
+  public static DataInputStream dis       ;
+  public static Queue<String>   cmdList   ;
+  public static String          currentCmd;
+
+
+
 
   
   //methods to connect with SREnv and obtain commands
@@ -57,19 +65,56 @@ public class SRMain {
    * moveTo(0, 0, modelObj);
    */
   
-  public static void initialisation() {
+  SRMain() {
     movObj   = new SRMov(int DIST, int COLUMNS, int ROWS, int DEGREE);
     modelObj = new SRModel(COLUMNS, ROWS, movObj);
+    connObj  = Bluetooth.waitForConnection();
+    
+    cmdList  = new Queue<String>;
+    inputObj = new SRInput(connObj);
+    btObj    = new BtStuff(connObj);
+    
+    btThread = new Thread(btObj);
+    btThread.setDaemon(true);
+    btThread.start();
+  }
+  
+  public static void main(String[] args) {
+    try{
+      while(true) {
+        if(inputObj.cmdList.empty() ) { //if there were no commands sent
+          
+        } else { //if there are commands in the queue waiting to be called
+          currentCmd = inputObj.getCurrentCmd();
+          if(currentCmd.equals("explore()") ) {
+            explore();
+            
+          }
+        }
+      }
+    } catch (Exception e) {
+      
+    }
   }
   
   public static int[][] explore() {
+    //--I AM HERE--
+    
     //boolean res = modelObj.scanAhead();
     //String colOutput = modelObj.getColour();
     //if(!colOutput.equals(NULL) ) {
       //btObj.sendString(colOutput);
     }
     
+    addVictim(modelObj.getColour() );
+    
+    
     return modelObj.map;
+  }
+  
+  public static void addVictim(String s) {
+    btObj.vicList.push(s);
+    
   }
   
 }
