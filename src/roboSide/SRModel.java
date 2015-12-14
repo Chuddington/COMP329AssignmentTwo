@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Random;
 import java.util.logging.Logger;
+import java.util.Queue;
 
 import lejos.nxt.*;
 import lejos.nxt.addon.ColorHTSensor;
@@ -30,9 +31,10 @@ public class SRModel extends GridWorldModel {
   public static int[]   cPos  ; //stores the X and Y axis of the robot
 
     //class/object variables
-  static SRMov    movObj;
-  static UltrasonicSensor us = new UltrasonicSensor(SensorPort.S3);
-  static ColorHTSensor    cs = new ColorHTSensor(   SensorPort.S4);
+  public static SRMov     moveO;
+  public static UltrasonicSensor us = new UltrasonicSensor(SensorPort.S3);
+  public static ColorHTSensor    cs = new ColorHTSensor(   SensorPort.S4);
+  public static Queue<String> vicList;
   
     //constants
   public static final int UNKNOWN_ID  = 6; //cell with 'fog of war'
@@ -47,20 +49,21 @@ public class SRModel extends GridWorldModel {
   //constructor
   SRModel(int x, int y) {
 	super(x, y, 2);
-    xLimit  = x            ;
-    yLimit  = y            ;
-    map     = new int[x][y];
+    xLimit  = x                ;
+    yLimit  = y                ;
+    vicList = new Queue<String>;
+    map     = new int[x][y]    ;
     populateMap();
-    cPos    = new int[2]   ;
-    cPos[0] = 0            ; //X axis position
-    cPos[1] = 0            ; //Y axis position
+    cPos    = new int[2]       ;
+    cPos[0] = 0                ; //X axis position
+    cPos[1] = 0                ; //Y axis position
     us.continuous();
   }
   
   //constructor including Movement object
   SRModel(int x, int y, SRMov m) {
 	  this(x, y);
-	  movObj = m;
+	  moveO = m;
     
   }
   
@@ -334,11 +337,11 @@ public class SRModel extends GridWorldModel {
   }
   
   public static void setMovementObject(SRMov m) {
-    movObj = m;
+    moveO = m;
   }
   
   public static SRMov getMovementObject() {
-    return movObj;
+    return moveO;
   }
   
   //method to return a string for Jason; outputs victim colour
@@ -348,20 +351,38 @@ public class SRModel extends GridWorldModel {
 
     if(colour == 0) {         //red   victim
       literal = String.format("victim(%d,%d,%d)", RED_VIC, cPos[0], cPos[1] );
+      
+      //add victim to map and the list of victims
       map[cPos[0] ][cPos[1] ] = RED_VIC;
+      addVictim(literal);
+      
     } else if (colour == 2)	{ //blue  victim
       //translate colour ID 2 to 1 as blue has higher priority
       literal = String.format("victim(%d,%d,%d)", BLU_VIC, cPos[0], cPos[1] );
+      
+      //add victim to map and the list of victims
       map[cPos[0] ][cPos[1] ] = BLU_VIC;
+      addVictim(literal);
+      
     } else if (colour == 1)	{ //green victim
       //translate colour ID 1 to 2 as green has lower priority
       literal = String.format("victim(%d,%d,%d)", GRN_VIC, cPos[0], cPos[1] );
+      
+      //add victim to map and the list of victims
       map[cPos[0] ][cPos[1] ] = GRN_VIC;
+      addVictim(literal);
+      
     } else {
-      map[cPos[0] ][cPos[1] ] = EMPTY_ID;
+      map[cPos[0] ][cPos[1] ] = EMPTY_ID; //set cell to empty & traversed
+      //send colour to agent - agent deals with error checking
+      literal = String.format("victim(%d, %d, %d)", colour, cPos[0], cPos[1] );
     }
     
     return literal;
+  }
+  
+  public static void addVictim(String s) {
+    vicList.push(s);
   }
 
 }

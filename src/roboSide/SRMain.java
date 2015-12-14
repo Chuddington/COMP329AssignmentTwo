@@ -38,15 +38,38 @@ public class SRMain {
   public static Logger log = Logger.getLogger(SRMain.class.getName());
 
     //object creation
-  public static SREnv   envObj  ;
   public static SRModel modelObj;
   public static SRMov   movObj  ;
+  public static BtStuff btObj   ;
+  public static Thread  btThread; //
+
   
   //methods to connect with SREnv and obtain commands
   
   /*
    * Information required: 
-   * Printed Null exception
+   * start BT connection
+   * get the explore command
+   * output the list of victims
+   * get the command to move to a particular cell (red victim)
+   * moveTo(x, y, modelObj);
+   * boolean hasVic = pickUpVictim();
+   * moveTo(0, 0, modelObj);
    */
+  
+  public static void initialisation() {
+    movObj   = new SRMov(int DIST, int COLUMNS, int ROWS, int DEGREE);
+    modelObj = new SRModel(COLUMNS, ROWS, movObj);
+  }
+  
+  public static int[][] explore() {
+    //boolean res = modelObj.scanAhead();
+    //String colOutput = modelObj.getColour();
+    //if(!colOutput.equals(NULL) ) {
+      //btObj.sendString(colOutput);
+    }
+    
+    return modelObj.map;
+  }
   
 }
