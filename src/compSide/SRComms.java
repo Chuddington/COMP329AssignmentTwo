@@ -76,5 +76,11 @@ public class SRComms implements Runnable {
     dos.flush();
 
   }
-  
+  public void sendBluetooth(String command){
+    try{
+        dos.writeUTF(command);
+        dos.flush();
+        dos.close();
+      }catch(IOException e){}
+  }
 }
