@@ -32,9 +32,8 @@ public class SRMain {
   public static final int DIST    = 25 ;
   
     //Jason String Literals
-  public static final Term explore   = Literal.parseLiteral("explore()");
   public static final Term outputMap = Literal.parseLiteral("getMap()");
-  public static final Term mvToDest  = Literal.parseLiteral("");
+  public static final Term mvToDest  = Literal.parseLiteral("mvToCell(x, y)");
   public static Logger log = Logger.getLogger(SRMain.class.getName());
 
     //object/variable creation
@@ -89,7 +88,12 @@ public class SRMain {
           currentCmd = inputObj.getCurrentCmd();
           if(currentCmd.equals("explore()") ) {
             explore();
-          } else if(currentCmd.equals("") );
+          } else if(currentCmd.equals("moveTo()") ) {
+            int targetX = (int)inputObj.getCurrentCmd();
+            int targetY = (int)inputObj.getCurrentCmd();
+            mvToDest(targetX, targetY);
+            modelObj = movObj.getModelObject();
+          }
         }
       }
     } catch (Exception e) {
@@ -104,22 +108,23 @@ public class SRMain {
           addVictim(    modelObj.getColour()   ); //floor colour to output q.
           boolean res = modelObj.scanAhead(DIST); //scans ahead
           modelObj.impScan(res, movObj.facing  ); //add to map - up only
-          modelObj.cPos = movObj.moveTo(loop1, loop2, modelObj.cPos, modelObj);
+          mvToDest(loop1, loop2);
+          modelObj = movObj.getModelObject();
         }
       } else { //if the row is even (moving downwards)
         for( (loop2 = COLUMNS - 1); loop2 >= 0; --loop2) {
           addVictim(    modelObj.getColour()   ); //floor colour to output q.
           boolean res = modelObj.scanAhead(DIST); //scans ahead
           modelObj.impScan(res, movObj.facing  ); //add to map - up only
-          modelObj.cPos = movObj.moveTo(loop1, loop2, modelObj.cPos, modelObj);
+          mvToDest(loop1, loop2);
+          modelObj = movObj.getModelObject();
         }
       }
     }
-    
+  }
   
-    
-    
-    return modelObj.map;
+  public static void mvToDest(int x, int y) {
+    modelObj.cPos = movObj.moveTo(x, y, modelObj.cPos, modelObj);
   }
   
   public static void addVictim(String s) {
