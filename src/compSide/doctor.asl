@@ -3,7 +3,7 @@
  * Victims put in order of priority and highest priority victim printed.
  * Tells scout when to stop and tells it of the highest priority victim.
  * 
- * Author: Johnathan Edwards 200965323 
+ * Author: Johnathan Edwards 200965323, ROBOT-06
  * Time: 15:20:38	 Date: 14/12/2015
  * 
  */
