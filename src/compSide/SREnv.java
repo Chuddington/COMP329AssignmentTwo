@@ -14,11 +14,43 @@ import java.util.logging.Logger;
 
 public class SREnv extends Environment {
   
-  //global variables
-    //Jason String Literals
-  public static final Term mvFwd = Literal.parseLiteral("moveForward()");
-
-    //Object declarations
+  //Jason String Literals
+  public static final Term mvFwd = Literal.parseLiteral("moveForward()")  ;
+  public static final Term explore = Literal.parseLiteral("explore()")    ;
+  //Boolean to tell when robot has finished exploring
+  public static boolean explored = false                                  ;
+  public static SRComms src                                               ;
+  public static nxtBTAddress                                              ;
+  
+  
+  @Override 
+  public void init(String[] args){
     
-  //stuff for updating perception and stuff
+    //Data Output Stream to send data to the robot
+    DataOutPutStream dos = new DataOutputStream(conn.getOutputStream());
+    //Input stream to take from the robot
+    dis = new DataInputStream(conn.getInputStream());
+    //New instance of SRComms, creating the BT connection
+     src = new SRComms("LEGOBOT-06", nxtBTAddress);
+  }
+  @Override 
+  public boolean executeAction(Strin ag, Structure action){
+    try{
+        if(action.equals(explore){
+          src.sendBluetooth("explore()");
+          if(explore){
+            addPercept("scout", Literal.parseLiteral("explored()")
+          }
+        }
+        else if(action.equals(mvFwd){
+          src.sendBluetooth("moveForward()");
+        }
+    }catch(Exception e){return false;} 
+    
+  }
+  void addVictim(int pos[], int colour){
+    
+    addPercept("scout", Literal.parseLiteral("victim( " + colour + ", " + pos[0] + " , " + pos[1] + ")"");
+    
+  }
 }
