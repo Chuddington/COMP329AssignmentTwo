@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class SREnv extends Environment {
   
   //Jason String Literals
-  public static final Term mvFwd = Literal.parseLiteral("moveForward()")  ;
+  public static final Term mvFwd = Literal.parseLiteral("quit")  ;
   public static final Term explore = Literal.parseLiteral("explore()")    ;
   //Boolean to tell when robot has finished exploring
   public static boolean explored = false                                  ;
@@ -42,8 +42,15 @@ public class SREnv extends Environment {
             addPercept("scout", Literal.parseLiteral("explored()")
           }
         }
-        else if(action.equals(mvFwd){
-          src.sendBluetooth("moveForward()");
+        else if(action.getFunctor.equals("moveTo"){
+          int x = (int)((NumberTerm)action.getTerm(0)).solve();
+          int y = (int)((NumberTerm)action.getTerm(1)).solve();
+          src.sendBluetooth("moveTo()");
+          src.sendBluetooth( (String)x);
+          src.sendBluetooth( (String)y);
+        }
+        else if(action.equals(quit){
+          src.sendBluetooth("quit");
         }
     }catch(Exception e){return false;} 
     
