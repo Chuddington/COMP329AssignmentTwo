@@ -2,6 +2,7 @@
  * scout agent that looks for victims and reports them to the doctor
  * 
  * Author: Johnathan Edwards 200965323, ROBOT-06
+ *	   Adam Large 200963462
  * Time: 15:17:47	 Date: 14/12/2015
  * 
  */
@@ -16,7 +17,21 @@
 	<-	.print("I have recieved orders from ",A," to look for victims!");
 		+scout_ready;
 		.wait(1000);
+		!start_explore;		//Starts traversal
 		!find_victims.		//starts to look for victims
+
+/* Starting the area traversal */
++start_explore
+	<-explore().
+	
+/*Calls explore() until explored is true */	
+!+explore() : not explored
+	<- !explore().
+!+explored : true.
+
+/*Prints area explored once traversal has finished */
++explored : true
+	<- .print("Area explored");
 
 /* Recursively find's victims using the robot
    and tells doctor their colour and location */
