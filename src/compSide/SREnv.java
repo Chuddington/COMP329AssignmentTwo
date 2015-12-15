@@ -15,13 +15,12 @@ import java.util.logging.Logger;
 public class SREnv extends Environment {
   
   //Jason String Literals
-  public static final Term mvFwd = Literal.parseLiteral("quit")  ;
+  public static final Term mvFwd = Literal.parseLiteral("quit")           ;
   public static final Term explore = Literal.parseLiteral("explore()")    ;
   //Boolean to tell when robot has finished exploring
   public static boolean explored = false                                  ;
   public static SRComms src                                               ;
   public static nxtBTAddress                                              ;
-  
   
   @Override 
   public void init(String[] args){
