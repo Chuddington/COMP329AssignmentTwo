@@ -1,7 +1,7 @@
 /* scout.asl
  * scout agent that looks for victims and reports them to the doctor
  * 
- * Author: Johnathan Edwards 200965323 
+ * Author: Johnathan Edwards 200965323, ROBOT-06
  * Time: 15:17:47	 Date: 14/12/2015
  * 
  */
