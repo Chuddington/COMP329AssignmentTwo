@@ -1,5 +1,12 @@
 package roboSide;
 
+/*
+ * File Purpose: Movement class for the robot - handles turning, moving forward
+                 and moving to a target cell in the 2D grid in SRModel.java
+ * Author/s    : Michael Chadwick
+ * Student IDs : 200882675
+ */
+
 import lejos.nxt.*;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.localization.OdometryPoseProvider;

@@ -1,5 +1,11 @@
 package roboSide;
 
+/*
+ * File Purpose: Main class for the robot - controls other class files
+ * Author/s    : Michael Chadwick
+ * Student IDs : 200882675
+ */
+
 import java.io.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.Random;

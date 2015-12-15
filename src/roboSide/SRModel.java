@@ -1,5 +1,12 @@
 package roboSide;
 
+/*
+ * File Purpose: Mapping class for the robot - contains 2D array and current
+ *               Robot position
+ * Author/s    : Michael Chadwick
+ * Student IDs : 200882675
+ */
+
 import java.util.Random;
 import java.util.logging.Logger;
 import java.util.Queue;

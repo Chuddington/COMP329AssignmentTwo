@@ -1,3 +1,12 @@
+package roboSide;
+
+/*
+ * File Purpose: Input class for the robot - becomes threaded to obtain commands
+                 from the computer agents (explore(), moveTo() and quit() )
+ * Author/s    : Michael Chadwick, Adam Large
+ * Student IDs : 200882675       , 200963462
+ */
+
 import java.io.*;
 import lejos.nxt.*;
 import lejos.nxt.comm.*;

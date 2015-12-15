@@ -1,3 +1,12 @@
+package roboSide;
+
+/*
+ * File Purpose: Output class for the robot - becomes threaded to output 
+                 locations of victims and when it has finished exploring
+ * Author/s    : Michael Chadwick, Adam Large
+ * Student IDs : 200882675       , 200963462
+ */
+
 import java.io.*;
 import lejos.nxt.*;
 import lejos.nxt.comm.*;
