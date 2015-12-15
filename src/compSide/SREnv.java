@@ -24,7 +24,6 @@ public class SREnv extends Environment {
   
   @Override 
   public void init(String[] args){
-    
     //Data Output Stream to send data to the robot
     DataOutPutStream dos = new DataOutputStream(conn.getOutputStream());
     //Input stream to take from the robot
@@ -32,9 +31,12 @@ public class SREnv extends Environment {
     //New instance of SRComms, creating the BT connection
      src = new SRComms("LEGOBOT-06", nxtBTAddress);
   }
+  //Override function to assess the Jason commands
   @Override 
   public boolean executeAction(Strin ag, Structure action){
     try{
+        //Once the explore command is recieved, this is sent
+        //To the robot, casuing it to begin movement
         if(action.equals(explore){
           src.sendBluetooth("explore()");
           if(explore){
@@ -51,12 +53,9 @@ public class SREnv extends Environment {
         else if(action.equals(quit){
           src.sendBluetooth("quit");
         }
+        //Catches an exception and returns false. 
+        //There incase of jason errors
     }catch(Exception e){return false;} 
     return true;
-  }
-  void addVictim(int pos[], int colour){
-    
-    addPercept("scout", Literal.parseLiteral("victim( " + colour + ", " + pos[0] + " , " + pos[1] + ")"");
-    
   }
 }
