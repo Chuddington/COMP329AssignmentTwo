@@ -32,6 +32,11 @@
 /*Prints area explored once traversal has finished */
 +explored : true
 	<- .print("Area explored");
+	
+/* Gets robot to move to specified X,Y coordinates */
++moveTo(X,Y): true
+	<- .print("Moving to ", X , Y , " ");
+	   moveTo(X,Y).
 
 /* Recursively find's victims using the robot
    and tells doctor their colour and location */
@@ -62,4 +67,6 @@
 +priority_victim(C,X,Y)[source(A)]
 	<-	if (C == 0) {.print(A," tells me the priority victim is red at (",X,",",Y,")")};		//if red
 		if (C == 1) {.print(A," Tells me the priority victim is blue at (",X,",",Y,")")};		//if blue
-		if (C == 2) {.print(A," Tells me the priority victim is green at (",X,",",Y,")")}.		//if green
+		if (C == 2) {.print(A," Tells me the priority victim is green at (",X,",",Y,")")};		//if green
+		!moveTo(X,Y).		//get robot to move to the priority victim.
+		
