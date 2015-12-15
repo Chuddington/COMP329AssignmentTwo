@@ -39,8 +39,8 @@ public class SREnv extends Environment {
         if(action.equals(explore){
           src.sendBluetooth("explore()");
           if(explore){
-            addPercept("scout", Literal.parseLiteral("explored()")
-          }
+            addPercept("scout", Literal.parseLiteral("explored");
+            }
         }
         else if(action.getFunctor.equals("moveTo"){
           int x = (int)((NumberTerm)action.getTerm(0)).solve();
@@ -53,7 +53,7 @@ public class SREnv extends Environment {
           src.sendBluetooth("quit");
         }
     }catch(Exception e){return false;} 
-    
+    return true;
   }
   void addVictim(int pos[], int colour){
     
