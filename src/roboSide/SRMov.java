@@ -13,23 +13,25 @@ public class SRMov {
   public static int degree ; //rotational strength of the robot
   public static int facing ; //state var to indicate where robot is facing
   
+  //object declarations
   public static SRModel modObj;
   public static DifferentialPilot pilot = new DifferentialPilot(3.22, 19, Motor.B, Motor.C);
   public static OdometryPoseProvider opp = new OdometryPoseProvider(pilot);
   
+  
   //constructor
   SRMov(int di, int c, int r, int de) {
-    columns = c ;
-    rows    = r ;
-    dist    = di;
-    degree  = de;
-    facing  = 1 ;
+    columns = c ; //number of X axis cells
+    rows    = r ; //number of Y axis cells
+    dist    = di; //distance to move forward
+    degree  = de; //strength of turning
+    facing  = 1 ; //direction the robot is facing (1 = up ... 4 = left)
   }
   
   //constructor including the SRModel class
   SRMov(int di, int c, int r, int de, SRModel m) {
-	this(di, c, r, de);
-	modObj  = m ;
+	this(di, c, r, de); //use base constructor
+	modObj  = m ;       //store local copy of mapping object
     
   }
   
@@ -38,8 +40,11 @@ public class SRMov {
     pilot.rotate(-degree); //Turns left
     
     //if facing up (1), set to 4; decrement otherwise
-    facing = (facing == 1) ? facing = 4 : --facing;
-    
+    if(facing == 1) {
+      facing = 4;
+    } else {
+      --facing; 
+    }
   }
   
   //method to turn the robot right
@@ -47,20 +52,22 @@ public class SRMov {
     pilot.rotate(degree); //Turns right
     
     //if facing right (4), set to 1; increment otherwise
-    facing = (facing == 4) ? facing = 1 : ++facing;
-    
+    if(facing == 4) {
+      facing = 1;
+    } else {
+      ++facing; 
+    }
   }
   
   //method to turn and face a particular direction
   public static void turnTo(int result) {
     while(facing != result) { //when not facing the desired direction
       //turn left if result is anti-clockwise; else turn right
-	if (facing > result)
-		turnLeft();
-	else
-		turnRight();
-      }
-    
+      if (facing > result)
+        turnLeft();
+      else
+        turnRight();
+    }
   }
   
   //outputs the current direction the robot is facing
@@ -73,6 +80,7 @@ public class SRMov {
     modObj = m;
   }
   
+  //gets local copy of mapping object - used to update object in SRMain
   public static SRModel getModelObject() {
     return modObj;
   }
@@ -82,7 +90,8 @@ public class SRMov {
     pilot.travel(dist);
   }
   
-  //method which moves to a cell; does not check for objects
+  //method which moves to a target cell; does not check for objects
+  //this method is not suitable for use
   public static int[] moveTo(int x, int y, int[] cPos) {
     int[] z = cPos; //create a local copy of current position
     

@@ -1,14 +1,5 @@
 package roboSide;
 
-import jason.asSyntax.*;
-import jason.environment.Environment;
-import jason.environment.grid.GridWorldModel;
-import jason.environment.grid.GridWorldView;
-import jason.environment.grid.Location;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.io.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.Random;
@@ -26,73 +17,73 @@ public class SRMain {
   
   //global variables here
     //constants
-  public static final int DEGREE  = 108;
-  public static final int COLUMNS = 4  ;
-  public static final int ROWS    = 5  ;
-  public static final int DIST    = 25 ;
+  public static final int DEGREE  = 108; //turning strength for robot
+  public static final int COLUMNS = 4  ; //quantity of X axis cells
+  public static final int ROWS    = 5  ; //quantity of Y axis cells
+  public static final int DIST    = 25 ; //distance to travel
   
-    //Jason String Literals
-  public static final Term outputMap = Literal.parseLiteral("getMap()");
-  public static final Term mvToDest  = Literal.parseLiteral("mvToCell(x, y)");
   public static Logger log = Logger.getLogger(SRMain.class.getName());
 
     //object/variable creation
-  public static SRModel         modelObj    ;
-  public static SRMov           movObj      ;
-  public static BtStuff         btObj       ;
-  public static SRInput         inputObj    ;
-  public static Thread          btThread    ;
+  public static SRModel         modelObj    ; //var. for Mapping  class
+  public static SRMov           movObj      ; //var. for Movement class
+  public static BtStuff         btObj       ; //var. for output
+  public static SRInput         inputObj    ; //var. for input
+  public static Thread          btThread    ; //object for threading output
+  public static Thread          inThread    ; //object for threading input
   public static NXTConnection   connObj     ; //holds connection type (BT)
-  public static DataInputStream dis         ;
-  public static Queue<String>   cmdList     ;
-  public static String          currentCmd  ;
-  public static int             loop1, loop2;
-
-
-
-
+  public static String          currentCmd  ; //holds command from input thread
+  public static int             loop1, loop2; //used in for loops
+  public static boolean         running     ; //used in main() while loop
   
-  //methods to connect with SREnv and obtain commands
   
-  /*
-   * Information required: 
-   * start BT connection
-   * get the explore command
-   * output the list of victims
-   * get the command to move to a particular cell (red victim)
-   * moveTo(x, y, modelObj);
-   * boolean hasVic = pickUpVictim();
-   * moveTo(0, 0, modelObj);
-   */
-  
+  //constructor
   SRMain() {
+    running  = true; //switch to keep the while loop running
+    
+    //set the class values using constants
     movObj   = new SRMov(int DIST, int COLUMNS, int ROWS, int DEGREE);
     modelObj = new SRModel(COLUMNS, ROWS, movObj);
+    
+    //set up the connection type
     connObj  = Bluetooth.waitForConnection();
     
-    cmdList  = new Queue<String>;
+    //set up objects used in threads
     inputObj = new SRInput(connObj);
     btObj    = new BtStuff(connObj);
+
+    inThread = new Thread(inputObj); //create input thread
+    inThread.setDaemon(true);        //create daemon for the thread
+    inThread.start();                //start the input thread
     
-    btThread = new Thread(btObj);
-    btThread.setDaemon(true);
-    btThread.start();
+    btThread = new Thread(btObj);    //create output thread
+    btThread.setDaemon(true);        //create daemon for the thread
+    btThread.start();                //start the output thread
+
   }
   
+  //main method on the robot
   public static void main(String[] args) {
     try{
-      while(true) {
+      while(running) { //when the quit() command hasn't been said
         if(inputObj.cmdList.empty() ) { //if there were no commands sent
           
         } else { //if there are commands in the queue waiting to be called
-          currentCmd = inputObj.getCurrentCmd();
-          if(currentCmd.equals("explore()") ) {
-            explore();
-          } else if(currentCmd.equals("moveTo()") ) {
-            int targetX = (int)inputObj.getCurrentCmd();
-            int targetY = (int)inputObj.getCurrentCmd();
-            mvToDest(targetX, targetY);
-            modelObj = movObj.getModelObject();
+
+          currentCmd = inputObj.getCurrentCmd(); //obtain agent command output
+
+          if(currentCmd.equals("explore()") ) {  //if told to explore
+            explore(); //run exmplore command
+            
+          } else if(currentCmd.equals("moveTo()") ) {    //go to a target
+            int targetX = (int)inputObj.getCurrentCmd(); //get X value
+            int targetY = (int)inputObj.getCurrentCmd(); //get Y value
+
+            mvToDest(targetX, targetY);                  //move to set cell
+            modelObj = movObj.getModelObject();          //update map object
+
+          } else if(currentCmd.equals("quit") ) {      //told to quit
+            running = false;                             //kill while loop
           }
         }
       }
@@ -101,32 +92,41 @@ public class SRMain {
     }
   }
   
+  //method to make the robot go through the entire arena
   public static void explore() {
-    for(loop1 = 0; loop1 < ROWS; ++loop1) { //for every row (X cell)
+    for(loop1 = 0; loop1 < COLUMNS; ++loop1) { //for every row (X cell)
       if( (loop1 % 2) == 0) { //if the row is 'odd' (moving upward)
-        for(loop2 = 0; loop2 < COLUMNS; ++loop2) {
+        for(loop2 = 0; loop2 < ROWS; ++loop2) {
           addVictim(    modelObj.getColour()   ); //floor colour to output q.
+
           boolean res = modelObj.scanAhead(DIST); //scans ahead
-          modelObj.impScan(res, movObj.facing  ); //add to map - up only
-          mvToDest(loop1, loop2);
-          modelObj = movObj.getModelObject();
+          modelObj.impScan(res, movObj.facing  ); //add to map - front only
+
+          mvToDest(loop1, loop2);                 //move to set cell
+          modelObj = movObj.getModelObject();     //update mapping object
         }
       } else { //if the row is even (moving downwards)
-        for( (loop2 = COLUMNS - 1); loop2 >= 0; --loop2) {
+        for( (loop2 = ROWS - 1); loop2 >= 0; --loop2) {
           addVictim(    modelObj.getColour()   ); //floor colour to output q.
+
           boolean res = modelObj.scanAhead(DIST); //scans ahead
-          modelObj.impScan(res, movObj.facing  ); //add to map - up only
-          mvToDest(loop1, loop2);
-          modelObj = movObj.getModelObject();
+          modelObj.impScan(res, movObj.facing  ); //add to map - front only
+
+          mvToDest(loop1, loop2);                 //move to set cell
+          modelObj = movObj.getModelObject();     //update mapping object
         }
       }
     }
+    btObj.addVictim("explored = true;");
   }
   
-  public static void mvToDest(int x, int y) {
+  //method to call the moveTo() method in mapping class; re-use of code
+  public static void mvToDest(int x, int y) { 
+    //update current position after arriving at the destination
     modelObj.cPos = movObj.moveTo(x, y, modelObj.cPos, modelObj);
   }
   
+  //pushes a victim (coloured floor) to the output queue
   public static void addVictim(String s) {
     btObj.vicList.push(s);
     
