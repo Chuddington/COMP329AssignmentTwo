@@ -41,7 +41,7 @@
 		
 /* Check if scout is at the end of it's run */
 +!check_finished(X,Y)
-	: X == 4 & Y == 0		//when position is end of world
+	: X == 5 & Y == 0		//when position is end of world
 	<-	+finished;		//believes it is finished
 	
 		//tell scout has completed it's task
