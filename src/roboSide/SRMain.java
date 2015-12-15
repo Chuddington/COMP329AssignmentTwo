@@ -38,15 +38,16 @@ public class SRMain {
   public static Logger log = Logger.getLogger(SRMain.class.getName());
 
     //object/variable creation
-  public static SRModel         modelObj  ;
-  public static SRMov           movObj    ;
-  public static BtStuff         btObj     ;
-  public static SRInput         inputObj  ;
-  public static Thread          btThread  ;
-  public static NXTConnection   connObj   ; //holds the type of connection (BT)
-  public static DataInputStream dis       ;
-  public static Queue<String>   cmdList   ;
-  public static String          currentCmd;
+  public static SRModel         modelObj    ;
+  public static SRMov           movObj      ;
+  public static BtStuff         btObj       ;
+  public static SRInput         inputObj    ;
+  public static Thread          btThread    ;
+  public static NXTConnection   connObj     ; //holds connection type (BT)
+  public static DataInputStream dis         ;
+  public static Queue<String>   cmdList     ;
+  public static String          currentCmd  ;
+  public static int             loop1, loop2;
 
 
 
@@ -88,8 +89,7 @@ public class SRMain {
           currentCmd = inputObj.getCurrentCmd();
           if(currentCmd.equals("explore()") ) {
             explore();
-            
-          }
+          } else if(currentCmd.equals("") );
         }
       }
     } catch (Exception e) {
@@ -97,16 +97,26 @@ public class SRMain {
     }
   }
   
-  public static int[][] explore() {
-    //--I AM HERE--
-    
-    //boolean res = modelObj.scanAhead();
-    //String colOutput = modelObj.getColour();
-    //if(!colOutput.equals(NULL) ) {
-      //btObj.sendString(colOutput);
+  public static void explore() {
+    for(loop1 = 0; loop1 < ROWS; ++loop1) { //for every row (X cell)
+      if( (loop1 % 2) == 0) { //if the row is 'odd' (moving upward)
+        for(loop2 = 0; loop2 < COLUMNS; ++loop2) {
+          addVictim(    modelObj.getColour()   ); //floor colour to output q.
+          boolean res = modelObj.scanAhead(DIST); //scans ahead
+          modelObj.impScan(res, movObj.facing  ); //add to map - up only
+          modelObj.cPos = movObj.moveTo(loop1, loop2, modelObj.cPos, modelObj);
+        }
+      } else { //if the row is even (moving downwards)
+        for( (loop2 = COLUMNS - 1); loop2 >= 0; --loop2) {
+          addVictim(    modelObj.getColour()   ); //floor colour to output q.
+          boolean res = modelObj.scanAhead(DIST); //scans ahead
+          modelObj.impScan(res, movObj.facing  ); //add to map - up only
+          modelObj.cPos = movObj.moveTo(loop1, loop2, modelObj.cPos, modelObj);
+        }
+      }
     }
     
-    addVictim(modelObj.getColour() );
+  
     
     
     return modelObj.map;

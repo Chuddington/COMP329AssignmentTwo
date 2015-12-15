@@ -312,6 +312,15 @@ public class SRModel {
     return false;
   }
   
+  public static boolean obsAtTarget(int x, int y) {
+    if(map[x][y] == OBSTACLE_ID) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+  
   public static void impScan(boolean[] r, int f) {
     if(r[0] && !scanLimitLeft(f) ) {
       obstacleAtLeft(f);
@@ -321,6 +330,12 @@ public class SRModel {
     }
     if(r[2] && !scanLimitRight(f) ) {
       obstacleAtRight(f);
+    }
+  }
+  
+  public static void impScan(boolean r, int f) {
+    if(r && !scanLimitUp(f) ) {
+      obstacleAtUp(f);
     }
   }
   

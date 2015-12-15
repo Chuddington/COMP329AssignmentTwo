@@ -142,9 +142,12 @@ public class SRMov {
                 
               } else {         //if up, down and right cell is unknown/occupied
                 turnTo(2);
-                boolean[] scnRes = map.scanAll(dist);
+                boolean[] scnRes = modObj.scanAll(dist);
                 modObj.impScan(scnRes, facing);
-                break;         //perform a scan and update the map
+                if(modObj.obsAtTarget(x, y) ) { //if obs. in target pos.
+                  return z; //end method, return current position
+                }
+                break;
               }
             }
           }
@@ -169,9 +172,12 @@ public class SRMov {
                 
               } else {         //if up, down and left cell is unknown/occupied
                 turnTo(4);
-                boolean[] scnRes = map.scanAll(dist);
+                boolean[] scnRes = modObj.scanAll(dist);
                 modObj.impScan(scnRes, facing);
-                break;         //perform a scan and update the map
+                if(modObj.obsAtTarget(x, y) ) { //if obs. in target pos.
+                  return z; //end method, return current position
+                }
+                break;
               }
             }
           }
@@ -200,8 +206,11 @@ public class SRMov {
                 
               } else {         //if up, right and left cell is unknown/occupied
                 turnTo(4);
-                boolean[] scnRes = map.scanAll(dist);
+                boolean[] scnRes = modObj.scanAll(dist);
                 modObj.impScan(scnRes, facing);
+                if(modObj.obsAtTarget(x, y) ) { //if obs. in target pos.
+                  return z; //end method, return current position
+                }
                 break;         //perform a scan and update the map
               }
             }
@@ -228,8 +237,11 @@ public class SRMov {
                 
               } else {         //if down, right, left cell is unknown/occupied
                 turnTo(4);
-                boolean[] scnRes = map.scanAll(dist);
+                boolean[] scnRes = modObj.scanAll(dist);
                 modObj.impScan(scnRes, facing);
+                if(modObj.obsAtTarget(x, y) ) { //if obs. in target pos.
+                  return z; //end method, return current position
+                }
                 break;         //perform a scan and update the map
               }
             }
