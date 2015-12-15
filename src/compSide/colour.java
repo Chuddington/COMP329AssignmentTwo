@@ -10,16 +10,10 @@ import jason.asSemantics.*; 	//to do unification
 import jason.asSyntax.*; 		//to handle AgentSpeak
 
 public class colour extends DefaultInternalAction {
-
+ 
 	//attributes for communication
 	Communication comm;
 	Thread commThread;
-	
-	////////////////////////
-	
-	int x = 0, y = -1, heading = 1;
-	
-	////////////////////////
 	
 	/* colour() starts the Communication
 	 * thread so to get information from 
@@ -38,25 +32,9 @@ public class colour extends DefaultInternalAction {
 	 * colour ID and X & Y are coordinates.
 	 */
 	public Object execute(TransitionSystem ts, Unifier un, Term[] args) throws Exception {
-	
-		///////////////////////////
 		
-		y = y + heading;
-		
-		if(y == 7) {
-			y = 6;
-			heading = (-1) * heading;
-			x++;
-		} else if(y == -1) {
-			y = 0;
-			heading = (-1) * heading;
-			x++;
-		}
-		
-		/////////////////////////////
-		
-		String s = comm.read();							//get the string with information on a victim from the robot.
-		Literal result = ASSyntax.parseLiteral(s);		//create a literal from a string to pass to the agent.
+		String s = comm.read();						//get the string with information on a victim from the robot.
+		Literal result = ASSyntax.parseLiteral(s);			//create a literal from a string to pass to the agent.
 		return un.unifies(result, args[0]);				//returns the literal to the agent.
 	}
 	
