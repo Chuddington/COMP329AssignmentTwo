@@ -8,6 +8,7 @@ package roboSide;
  */
 
 import java.io.*;
+import java.util.Queue;
 import lejos.nxt.*;
 import lejos.nxt.comm.*;
 
@@ -22,7 +23,7 @@ public class BtStuff extends Runnable {
   //constructor
   public BtStuff(NXTConnection nxtConn) {
     connO = nxtConn;                           //holds the connection type (BT)
-    cmdList = new Queue<String>;               //create command queue
+    cmdList = new Queue<String>();               //create command queue
     dis = connO.openDataInputStream();         //open the input stream
     System.out.println("Input Stream Linked"); //user information
   }

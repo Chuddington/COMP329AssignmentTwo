@@ -7,9 +7,8 @@ package roboSide;
  */
 
 import java.io.*;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Queue;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import lejos.nxt.*;
 import lejos.nxt.addon.ColorHTSensor;
@@ -28,8 +27,6 @@ public class SRMain {
   public static final int ROWS    = 5  ; //quantity of Y axis cells
   public static final int DIST    = 25 ; //distance to travel
   
-  public static Logger log = Logger.getLogger(SRMain.class.getName());
-
     //object/variable creation
   public static SRModel         modelObj    ; //var. for Mapping  class
   public static SRMov           movObj      ; //var. for Movement class
@@ -48,7 +45,7 @@ public class SRMain {
     running  = true; //switch to keep the while loop running
     
     //set the class values using constants
-    movObj   = new SRMov(int DIST, int COLUMNS, int ROWS, int DEGREE);
+    movObj   = new SRMov(DIST, COLUMNS, ROWS, DEGREE);
     modelObj = new SRModel(COLUMNS, ROWS, movObj);
     
     //set up the connection type
@@ -112,7 +109,7 @@ public class SRMain {
           modelObj = movObj.getModelObject();     //update mapping object
         }
       } else { //if the row is even (moving downwards)
-        for( (loop2 = ROWS - 1); loop2 >= 0; --loop2) {
+        for( loop2 = ROWS - 1; loop2 >= 0; --loop2) {
           addVictim(    modelObj.getColour()   ); //floor colour to output q.
 
           boolean res = modelObj.scanAhead(DIST); //scans ahead

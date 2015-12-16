@@ -7,6 +7,8 @@ package roboSide;
  * Student IDs : 200882675
  */
 
+import java.util.Queue;
+
 import lejos.nxt.*;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.localization.OdometryPoseProvider;
